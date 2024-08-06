@@ -96,10 +96,10 @@ function createAbIcons() {
 				T(`善於攻城（對塔傷害 4 倍）`, 'xIcbDzl');
 				break;
 			case AB_WAVE:
-				T(`${d[0]} % 發射 Lv. ${d[1]} 波動${U}`, 'ZbPqGoj');
+				T(`${d[0]} % 發射 Lv${d[1]} 波動${U}`, 'ZbPqGoj');
 				break;
 			case AB_MINIWAVE:
-				T(`${d[0]} % 發射 Lv. ${d[1]} 小波動${U}`, 'W18c1hw');
+				T(`${d[0]} % 發射 Lv${d[1]} 小波動${U}`, 'W18c1hw');
 				break;
 			case AB_WEAK:
 				W(`${d[0]} % 降低攻擊力${U}至 ${d[2]} % 持續 ${numStrT(d[1])}，控場覆蓋率 ${getCoverUnit(E, d[0], d[1])} %`, 'yRkhAHL');
@@ -158,16 +158,16 @@ function createAbIcons() {
 				W('烈波反擊', 'tchDtAr');
 				break;
 			case AB_AFTERMATH:
-				W(`死後 ${d[0]} % 發射 Lv. ${d[3]}烈波（範圍 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'WmB7utZ');
+				W(`死後 ${d[0]} % 發射 Lv${d[3]}烈波（範圍 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'WmB7utZ');
 				break;
 			case AB_POIATK:
 				W(`${d[0]} % 毒擊（造成角色血量 ${(d[1])} % 傷害）`, '6O6zwrp');
 				break;
 			case AB_VOLC:
-				T(`${d[0]} % 發射 Lv. ${d[3]} 烈波（出現位置 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'at4bW0n');
+				T(`${d[0]} % 發射 Lv${d[3]} 烈波（出現位置 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'at4bW0n');
 				break;
 			case AB_MINIVOLC:
-				T(`${d[0]} % 發射 Lv. ${d[3]} 小烈波（出現位置 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'AEITK8t');
+				T(`${d[0]} % 發射 Lv${d[3]} 小烈波（出現位置 ${d[1]}～${d[2]}，持續 ${numStrT(d[3]*20)}）`, 'AEITK8t');
 				break;
 		}
 	}
@@ -364,9 +364,9 @@ async function load_all() {
 	res = await fetch("/reward.json");
 	if (!res.ok) throw '';
 	char_groups['RWNAME'] = await res.json();
-	res = await fetch("/ENAME");
+	res = await fetch("/ENAME.txt");
 	if (!res.ok) throw '';
-	char_groups['ENAME'] = (await res.text()).split('|');
+	char_groups['ENAME'] = (await res.text()).split('\n');
 	char_groups['ver'] = {{{stage-ver}}};
 	db.transaction('map', 'readwrite').objectStore('map').put(char_groups, -1).onsuccess = initUI;
 }

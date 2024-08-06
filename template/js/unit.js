@@ -196,7 +196,7 @@ function createAbIcons(form, p1, p2, tbody) {
 		p2.appendChild(p);
 	}
 	let treasure = !1,
-		tn, du, func, i, v;
+		tn, du, cv, func, i, v;
 
 	function w3(msg, icon) {
 		const p = document.createElement('div');
@@ -236,7 +236,7 @@ function createAbIcons(form, p1, p2, tbody) {
 				break;
 
 			case 2:
-				w1(`${v} % 以1血存活一次`, "WcMDxXS");
+				w1(`${v} % 以 1 血存活一次`, "WcMDxXS");
 				break;
 
 			case 3:
@@ -288,28 +288,28 @@ function createAbIcons(form, p1, p2, tbody) {
 				func = w1;
 				if (layout == '2')
 					func = w3;
-				func(`${v[0]} % 發射 Lv. ${v[1]} 小波動${U}`, "W18c1hw");
+				func(`${v[0]} % 發射 Lv${v[1]} 小波動${U}`, "W18c1hw");
 				break;
 
 			case 13:
 				func = w1;
 				if (layout == '2')
 					func = w3;
-				func(`${v[0]} % 發射 Lv. ${v[1]} 波動${U}`, "ZbPqGoj");
+				func(`${v[0]} % 發射 Lv${v[1]} 波動${U}`, "ZbPqGoj");
 				break;
 
 			case 14:
 				func = w1;
 				if (layout == '2')
 					func = w3;
-				func(`${v[0]} % 發射 Lv. ${v[4]}小烈波${U}（出現位置 ${v[1]}～${v[2]}，持續 ${numStrT(v[3])}）`, "AEITK8t");
+				func(`${v[0]} % 發射 Lv${v[4]} 小烈波${U}（出現位置 ${v[1]}～${v[2]}，持續 ${numStrT(v[3])}）`, "AEITK8t");
 				break;
 
 			case 15:
 				func = w1;
 				if (layout == '2')
 					func = w3;
-				func(`${v[0]} % 發射Lv${v[4]}烈波${U}（出現位置 ${v[1]}～${v[2]}，持續 ${numStrT(v[3])}）`, "at4bW0n");
+				func(`${v[0]} % 發射 Lv${v[4]} 烈波${U}（出現位置 ${v[1]}～${v[2]}，持續 ${numStrT(v[3])}）`, "at4bW0n");
 				break;
 
 			case 16:
@@ -345,30 +345,66 @@ function createAbIcons(form, p1, p2, tbody) {
 				break;
 
 			case 21:
-				du = treasure ? ~~(v[2] * (1 + treasures[23] / 1500)) : v[2];
+				if (treasure) {
+					du = ~~(v[2] * 1.2);
+					if (form.trait & trait_no_treasure) {
+						cv = `${getCoverUnit(form, v[0], v[2])} %（${getCoverUnit(form, v[0], du)} %）`;
+						du = `${numStrT(v[2])}（${numStrT(du)}）`;
+					} else {
+						cv = getCoverUnit(form, v[0], du) + ' %';
+						du = numStrT(du);
+					}
+				} else {
+					du =  numStrT(v[2]);
+					cv = getCoverUnit(form, v[0], v[2]) + ' %';
+				}
 				if (layout == '2') {
-					w2(`${v[0]} % 使攻擊力下降${U}至${v[1]} % 持續 ${numStrT(du)}，覆蓋率 ${getCoverUnit(form, v[0], du)} %`, 'yRkhAHL');
+					w2(`${v[0]} % 使攻擊力下降${U}至 ${v[1]} % 持續 ${du}，覆蓋率 ${cv}`, 'yRkhAHL');
 					break;
 				}
-				w2(`${v[0]} % 使${tn}攻擊力下降${U}至${v[1]} % 持續 ${numStrT(du)}，控場覆蓋率 ${getCoverUnit(form, v[0], du)} %`, "yRkhAHL");
+				w2(`${v[0]} % 使${tn}攻擊力下降${U}至 ${v[1]} % 持續 ${du}，覆蓋率 ${cv}`, "yRkhAHL");
 				break;
 
 			case 22:
-				du = treasure ? ~~(v[1] * (1 + treasures[23] / 1500)) : v[1];
+				if (treasure) {
+					du = ~~(v[1] * 1.2);
+					if (form.trait & trait_no_treasure) {
+						cv = `${getCoverUnit(form, v[0], v[1])} %（${getCoverUnit(form, v[0], du)} %）`;
+						du = `${numStrT(v[1])}（${numStrT(du)}）`;
+					} else {
+						cv = getCoverUnit(form, v[0], du) + ' %';
+						du = numStrT(du);
+					}
+				} else {
+					du =  numStrT(v[1]);
+					cv = getCoverUnit(form, v[0], v[1]) + ' %';
+				}
 				if (layout == '2') {
-					w2(`${v[0]} % 使動作停止持續 ${numStrT(du)} ${U}，覆蓋率 ${getCoverUnit(form, v[0], du)} %`, 'i1pP3Mi');
+					w2(`${v[0]} % 使動作停止持續 ${du} ${U}，覆蓋率 ${cv}`, 'i1pP3Mi');
 					break;
 				}
-				w2(`${v[0]} % 使 ${tn} 動作停止${U}持續 ${numStrT(du)}，控場覆蓋率 ${getCoverUnit(form, v[0], du)} %`, "i1pP3Mi");
+				w2(`${v[0]} % 使 ${tn} 動作停止${U}持續 ${du}，覆蓋率 ${cv}`, "i1pP3Mi");
 				break;
 
 			case 23:
-				du = treasure ? ~~(v[1] * (1 + treasures[23] / 1500)) : v[1];
+				if (treasure) {
+					du = ~~(v[1] * 1.2);
+					if (form.trait & trait_no_treasure) {
+						cv = `${getCoverUnit(form, v[0], v[1])} %（${getCoverUnit(form, v[0], du)} %）`;
+						du = `${numStrT(v[1])}（${numStrT(du)}）`;
+					} else {
+						cv = getCoverUnit(form, v[0], du) + ' %';
+						du = numStrT(du);
+					}
+				} else {
+					du =  numStrT(v[1]);
+					cv = getCoverUnit(form, v[0], v[1]) + ' %';
+				}
 				if (layout == '2') {
-					w2(`${v[0]} % 使動作變慢${U}持續 ${numStrT(du)}，覆蓋率 ${getCoverUnit(form, v[0], du)} %`, 'MyoCUMu');
+					w2(`${v[0]} % 使動作變慢${U}持續 ${du}，覆蓋率 ${cv}`, 'MyoCUMu');
 					break;
 				}
-				w2(`${v[0]} % 使${tn}動作變慢${U}持續 ${numStrT(du)}，控場覆蓋率 ${getCoverUnit(form, v[0], du)} %`, "MyoCUMu");
+				w2(`${v[0]} % 使${tn}動作變慢${U}持續 ${du}，覆蓋率 ${cv}`, "MyoCUMu");
 				break;
 
 			case 24:
@@ -432,16 +468,37 @@ function createAbIcons(form, p1, p2, tbody) {
 				break;
 
 			case 32:
-				w2(`${v[0]} % 發動攻擊無效持續 ${numStrT(v[1])}`, "8Eq6vPV");
+				if (treasure) {
+					if (form.trait & trait_no_treasure) {
+						du = `${numStrT(~~(v[1]))}（${numStrT(~~(v[1] * 1.2))}）`;
+					} else {
+						du = numStrT(~~(v[1] * 1.2));
+					}
+				} else {
+					du = numStrT(v[1]);
+				}
+				w2(`${v[0]} % 發動攻擊無效持續 ${du}`, "8Eq6vPV");
 				break;
 
 			case 33:
-				du = treasure ? ~~(v[1] * (1 + treasures[23] / 1500)) : v[1];
+				if (treasure) {
+					du = ~~(v[1] * 1.2);
+					if (form.trait & trait_no_treasure) {
+						cv = `${getCoverUnit(form, v[0], v[1])} %（${getCoverUnit(form, v[0], du)} %）`;
+						du = `${numStrT(v[1])}（${numStrT(du)}）`;
+					} else {
+						cv = getCoverUnit(form, v[0], du) + ' %';
+						du = numStrT(du);
+					}
+				} else {
+					du =  numStrT(v[1]);
+					cv = getCoverUnit(form, v[0], v[1]) + ' %';
+				}
 				if (layout == '2') {
-					w2(`${v[0]} % 詛咒${U}持續 ${numStrT(du)}，覆蓋率 ${getCoverUnit(form, v[0], du)} %`, "0Rraywl");
+					w2(`${v[0]} % 詛咒${U}持續 ${du}，覆蓋率 ${cv}`, "0Rraywl");
 					break;
 				}
-				w2(`${v[0]} % 詛咒${U}${tn}持續 ${numStrT(du)}，控場覆蓋率 ${getCoverUnit(form, v[0], du)} %`, "0Rraywl");
+				w2(`${v[0]} % 詛咒${U}${tn}持續 ${du}，覆蓋率 ${cv}`, "0Rraywl");
 				break;
 
 			case 37:
@@ -1172,7 +1229,7 @@ function handleBlur() {
 			this.L = Math.min(num, this.M);
 		}
 	}
-	this.textContent = 'Lv. ' + this.L;
+	this.textContent = 'Lv' + this.L;
 	const arr = skill_costs[this.C];
 	let total = 0;
 	for (let i = 0; i < this.L; ++i)
@@ -1304,7 +1361,7 @@ function renderForm(form, lvc_text, _super = false, hide = false) {
 		td = document.createElement('td');
 		td._l = form.lvc;
 		td._v = Math.min(form.lvc == 3 ? 60 : 50, my_cat.info[4] + my_cat.info[5]);
-		td.textContent = 'Lv. ' + td._v;
+		td.textContent = 'Lv' + td._v;
 		td.contentEditable = true;
 		td.inputMode = 'numeric';
 		td.addEventListener('focus', handleFocus);
@@ -1327,7 +1384,7 @@ function renderForm(form, lvc_text, _super = false, hide = false) {
 					updateValues(form, tbl);
 				}
 			}
-			this.textContent = 'Lv. ' + this._v;
+			this.textContent = 'Lv' + this._v;
 		});
 		tr.appendChild(td);
 		td = document.createElement('td');
@@ -1414,7 +1471,6 @@ function renderForm(form, lvc_text, _super = false, hide = false) {
 		}
 		td.appendChild(tr);
 		tr = document.createElement('div');
-		tr.id = 'trait';
 		td.appendChild(tr);
 		const trD = tr;
 		tr = document.createElement('tr');
@@ -1458,7 +1514,7 @@ function renderForm(form, lvc_text, _super = false, hide = false) {
 				td = document.createElement('td');
 				td.classList.add('F');
 				custom_talents.push(td.L = td.M = T[i + 1] || 1);
-				td.textContent = 'Lv. ' + td.L;
+				td.textContent = 'Lv' + td.L;
 				td.C = T[i + 11] - 1;
 				td.contentEditable = true;
 				td.inputMode = 'numeric';
@@ -1508,7 +1564,7 @@ function renderForm(form, lvc_text, _super = false, hide = false) {
 					td = document.createElement('td');
 					td.classList.add('F');
 					custom_super_talents.push(td.L = td.M = T[i + 1] || 1);
-					td.textContent = 'Lv. ' + td.L;
+					td.textContent = 'Lv' + td.L;
 					td.C = T[i + 11] - 1;
 					td.contentEditable = true;
 					td.inputMode = 'numeric';
@@ -2737,14 +2793,14 @@ function drawgraph(T) {
 			},
 			'axisX': {
 				'title': '等級',
-				'prefix': "Lv. "
+				'prefix': "Lv"
 			},
 			'theme': document.documentElement.getAttribute('data-theme') == 'dark' ? 'dark1' : 'light1',
 			'title': {
 				'text': "成長曲線"
 			},
 			'data': [{
-				'xValueFormatString': '"Lv. "0↑',
+				'xValueFormatString': '"Lv"0↑',
 				'yValueFormatString': "0'%'",
 				'type': 'stepLine',
 				'dataPoints': data
@@ -2808,14 +2864,14 @@ function drawgraph(T) {
 				},
 				'axisX': {
 					'title': '等級',
-					'prefix': "Lv. "
+					'prefix': "Lv"
 				},
 				'theme': document.documentElement.getAttribute('data-theme') == 'dark' ? 'dark1' : 'light1',
 				'title': {
 					'text': '成長曲線'
 				},
 				'data': [{
-					'xValueFormatString': '"Lv. "0',
+					'xValueFormatString': '"Lv"0',
 					'yValueFormatString': '#,##0',
 					'type': 'line',
 					'dataPoints': datas
@@ -2845,11 +2901,24 @@ function xpgraph() {
 	let td, tr = document.createElement('tr');
 	for (let i = 0; i < 12; ++i) {
 		const td = document.createElement('td');
-		td.textContent = (i & 1) ? 'XP' : 'Level';
+		td.textContent = (i & 1) ? 'XP' : '等級';
 		tr.appendChild(td);
 	}
 	table.appendChild(tr);
-	const datas = my_cat.info[13].split('|').map(x => parseInt(x));
+	let datas = my_cat.info[13];
+	switch (datas) {
+	case '#':
+		datas = [7800, 9800, 14800, 21800, 42500, 64300, 93200, 118000, 197400, 513500];
+		break;
+	case '$':
+		datas = [6250, 8200, 12400, 17800, 24800, 42400, 64500, 93000, 148000, 298000];
+		break;
+	case '@':
+		datas = [5000, 8000, 12200, 17800, 24800, 33200, 43000, 54200, 66800, 80800];
+		break;
+	default:
+		datas = datas.split('|').map(x => parseInt(x));
+	}
 	const curve = [1, 2, 3, 3.5, 4, 4.5];
 	let costs = new Uint32Array(60);
 	for (let i = 0; i < datas.length; ++i)
@@ -2904,7 +2973,7 @@ function xpgraph() {
 		let i = j / 2;
 		let td1 = document.createElement('td');
 		let td2 = document.createElement('td');
-		td1.innerText = `Total`;
+		td1.innerText = '總和';
 		td2.innerText = numStr(sums[i]);
 		tr.appendChild(td1);
 		tr.appendChild(td2);

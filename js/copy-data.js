@@ -8,10 +8,10 @@ const sources = [
 	'map.tsv',
 	'group.json',
 	'levelcurve.js',
-	'ENAME',
+	'ENAME.txt',
 	'reward.json',
 	'cat.tsv',
-	'form.tsv',
+	'catstat.tsv',
 	'enemy.tsv'
 ];
 

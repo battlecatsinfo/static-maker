@@ -134,7 +134,7 @@ class FormDPS {
 		if (this.s_lv.length || this.F.lvc == 3)
 			x = this.lv_c.value = 60;
 		else
-			this.lv_c.value = x = Math.min(this.info[4] + this.info[5], [110, 50, 130, 120, 50, 50][this.info[0]]);
+			this.lv_c.value = x = Math.min(this.info[4] + this.info[5], 50);
 		my_curve = _curves[this.info[16]];
 		this.lvm = getLevelMulti(x);
 		this.lv_c.onblur = function() {
@@ -384,7 +384,7 @@ class FormDPS {
 					p.oninput = function() {
 						let tal_cnt = 0;
 						let sup_cnt = 0;
-						for (let j = 0;; j += 14) {
+						for (let j = 1;j < 113;j += 14) {
 							if (j == i) {
 								if (self.info[10][j + 13] == 1) {
 									self.s_lv[sup_cnt] = parseInt(this.value);

@@ -243,12 +243,12 @@ class Form {
 			this.tba = parseInt(o[15], 10);
 			this.backswing = parseInt(o[16], 10);
 			this.attackF = parseInt(o[17], 10);
-			this.atk_type = parseInt(o[18], 10);
+			this.atkType = parseInt(o[18], 10);
 			this.trait = parseInt(o[19], 10);
 			this.abi = parseInt(o[20], 10);
 			if (o[21]) {
 				this.lds = o[21].split('|').map(toi);
-				this.ldr = o[21].split('|').map(toi);
+				this.ldr = o[22].split('|').map(toi);
 			}
 			this.imu = parseInt(o[23], 10);
 			this.ab = {};
@@ -256,11 +256,12 @@ class Form {
 				for (const x of o[24].split('|')) {
 					let idx = x.indexOf('@');
 					if (idx == -1) {
-						idx = parseInt(x.slice(0, x.indexOf('&')));
+						idx = x.indexOf('&');
+						let i = parseInt(x.slice(0, idx), 10);
 						if (x.endsWith('&'))
-							this.ab[idx] = null;
+							this.ab[i] = null;
 						else
-							this.ab[idx] = x.slice(idx + 1);
+							this.ab[i] = x.slice(idx + 1);
 					} else {
 						this.ab[parseInt(x.slice(0, idx), 10)] = x.slice(idx + 1).split('!').map(toi);
 					}
@@ -989,7 +990,7 @@ class Form {
 	}
 	getrange_max() {
 		if ((this.atkType & ATK_OMNI) || (this.atkType & ATK_LD)) {
-			m = this.lds[0] + this.ldr[1];
+			let m = this.lds[0] + this.ldr[1];
 			for (let i = 1; i < this.lds.length; ++i)
 				m = Math.max(m, this.lds[i] + this.ldr[i]);
 			return m;
@@ -997,11 +998,11 @@ class Form {
 		return this.range;
 	}
 	getreach_base() {
-		if (!this.lds.length) return this.range;
+		if (!this.lds) return this.range;
 		return this.lds[0] > 0 ? this.lds[0] : this.range;
 	}
 	getrange_interval() {
-		return this.lds.length ? Math.abs(this.ldr[0]) : 0;
+		return this.lds ? Math.abs(this.ldr[0]) : 0;
 	}
 	getrange_interval_max() {
 		if ((this.atkType & ATK_OMNI) || (this.atkType & ATK_LD)) {
@@ -1216,7 +1217,7 @@ class Enemy {
 			this.tba = parseInt(o[15], 10);
 			this.backswing = parseInt(o[16], 10);
 			this.attackF = parseInt(o[17], 10);
-			this.atk_type = parseInt(o[18], 10);
+			this.atkType = parseInt(o[18], 10);
 			this.trait = parseInt(o[19], 10);
 			this.abi = parseInt(o[20], 10);
 			if (o[21]) {
@@ -1229,11 +1230,12 @@ class Enemy {
 				for (const x of o[24].split('|')) {
 					let idx = x.indexOf('@');
 					if (idx == -1) {
-						idx = parseInt(x.slice(0, x.indexOf('&')));
+						idx = x.indexOf('&');
+						let i = parseInt(x.slice(0, idx), 10);
 						if (x.endsWith('&'))
-							this.ab[idx] = null;
+							this.ab[i] = null;
 						else
-							this.ab[idx] = x.slice(idx + 1);
+							this.ab[i] = x.slice(idx + 1);
 					} else {
 						this.ab[parseInt(x.slice(0, idx), 10)] = x.slice(idx + 1).split('!').map(toi);
 					}
@@ -1397,7 +1399,7 @@ async function getAllCats() {
 	for (let i = 1; i <= {{{num-cats}}}; ++i)
 		cats[i - 1] = new Cat(res[i].split('\t'));
 
-	res = await fetch('/form.tsv');
+	res = await fetch('/catstat.tsv');
 	if (!res.ok) throw '';
 
 	res = (await res.text()).split('\n');

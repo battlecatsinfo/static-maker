@@ -283,12 +283,11 @@ new (class extends require('./base.js') {
 
 			if (v.length) {
 				const bg = ['', '', '#795548', '#93254b', '#9C27B0', '#673AB7'][rarity];
-					v.sort();
-					S += `<details open>
+				S += `<details open>
 <summary class="w3-tag w3-padding w3-round-large" style="background-color:${bg} !important">${['基本', 'EX', '稀有', '激稀有', '超激稀有', '傳說稀有'][rarity]}</summary>
 <table class="w3-table w3-centered R" style="width:auto;margin:0 auto"><tbody>`;
 				let i = 0;
-				v.sort();
+				v.sort((a, b) => a - b);
 				while (i < (v.length - 1)) {
 					S += `<tr>${this.gen1(v[i], MUL[v[i]])}${this.gen1(v[i + 1], MUL[v[i + 1]])}</tr>`;
 					i += 2;
@@ -302,7 +301,7 @@ new (class extends require('./base.js') {
 			}
 
 			for (const [k, v] of Object.entries(out))
-				S += `<details><summary class="w3-tag w3-padding w3-round-large">${k}</summary><div style="width:max(60%,400px);margin:.7em auto;padding:.3em .8em;border:1px solid #ccc;text-align:left">${v.sort().map(x => self.unit_name[x]).join('、')}</div></details>`;
+				S += `<details><summary class="w3-tag w3-padding w3-round-large">${k}</summary><div style="width:max(60%,400px);margin:.7em auto;padding:.3em .8em;border:1px solid #ccc;text-align:left">${v.sort((a, b) => a - b).map(x => self.unit_name[x]).join('、')}</div></details>`;
 		}
 		return S;
 	}

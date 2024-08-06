@@ -205,7 +205,7 @@ function getAtk(form, line, theATK, parent, first, attackS) {
 	var treasure;
 	const lvc = form.lvc;
 	for (const ab of line) {
-		switch (parseInt(ab[0])) {
+		switch (parseInt(ab[0], 10)) {
 			case AB_WAVE:
 				lines.push('波動');
 				if (attackS != undefined)
@@ -367,7 +367,7 @@ function getHp(lvc, line, theHP, parent, first, trait) {
 	var eva_ef = false;
 	var treasure;
 	for (const ab of line) {
-		switch (parseInt(ab[0])) {
+		switch (parseInt(ab[0], 10)) {
 			case AB_GOOD:
 				spec = (trait & trait_treasure) && (trait & trait_no_treasure);
 				treasure = spec ? first : (trait & trait_treasure);
@@ -457,7 +457,7 @@ function createResIcons(res, p) {
 		"抗傳耐性"
 	];
 	for (let [k, v] of Object.entries(res)) {
-		k = parseInt(k);
+		k = parseInt(k, 10);
 		c = document.createElement('div');
 		e = new Image(40, 40);
 		e.src = 'https://i.imgur.com/' + res_icon_names[k] + '.png';
@@ -480,7 +480,7 @@ loadAllCats().then(s => {
 	let X = (new URL(location.href)).searchParams.get('targets');
 	if (X) {
 		for (const y of X.split(',')) {
-			const n = parseInt(y);
+			const n = parseInt(y, 10);
 			let c = cats[n];
 			let m = c.forms.length - 1;
 			targets.add(c.toString() + '-' + m);
@@ -492,8 +492,8 @@ loadAllCats().then(s => {
 		for (const y of X.split(',')) {
 			let z = y.split('-');
 			if (z.length == 2) {
-				addCat(n, newTab(), cats[parseInt(z[0])].forms[parseInt(z[1])]);
-				targets.add(z[0].toString() + '-' + z[1]);
+				addCat(parseInt(z[0], 10), newTab(), parseInt(z[1], 10));
+				targets.add(z[0] + '-' + z[1]);
 			}
 		}
 	}
@@ -547,9 +547,9 @@ function setStat(C /* Cat */ , F /* Form */ , I /* insert index */ , L /* level 
 		tby[8].children[I].textContent = F.range + '/' + T;
 	}
 	const c = Object.entries(F.ab);
-	getHpString(F, getCombinations(c.filter(x => hp_mult_abs.has(parseInt(x[0]))).map(x => Array.prototype.concat(x[0], x[1]))), L, tby[2].children[I]);
+	getHpString(F, getCombinations(c.filter(x => hp_mult_abs.has(parseInt(x[0], 10))).map(x => Array.prototype.concat(x[0], x[1]))), L, tby[2].children[I]);
 	const a = [F.atk, F.atk1, F.atk2].filter(x => x);
-	const b = getCombinations(c.filter(x => atk_mult_abs.has(parseInt(x[0]))).map(x => Array.prototype.concat(x[0], x[1])));
+	const b = getCombinations(c.filter(x => atk_mult_abs.has(parseInt(x[0], 10))).map(x => Array.prototype.concat(x[0], x[1])));
 	getAtkString(F, a, b, L, tby[4].children[I]);
 	getAtkString(F, a, b, L, tby[5].children[I], F.attackF / 30);
 
@@ -566,7 +566,7 @@ function setStat(C /* Cat */ , F /* Form */ , I /* insert index */ , L /* level 
 		M.appendChild(d);
 	}
 	for ([i, v] of Object.entries(F.ab)) {
-		switch (parseInt(i)) {
+		switch (parseInt(i, 10)) {
 			case 1:
 				W(`體力 ${v[0]} % 以下攻擊力增加至 ${100 + v[1]} %`, "IE6ihRp");
 				break;
@@ -601,13 +601,13 @@ function setStat(C /* Cat */ , F /* Form */ , I /* insert index */ , L /* level 
 				W("鋼鐵", "MzHKigD");
 				break;
 			case 12:
-				W(`${v[0]} % Lv. ${v[1]} 小波動`, "W18c1hw");
+				W(`${v[0]} % Lv${v[1]} 小波動`, "W18c1hw");
 				break;
 			case 13:
-				W(`${v[0]} % Lv. ${v[1]} 波動`, "ZbPqGoj");
+				W(`${v[0]} % Lv${v[1]} 波動`, "ZbPqGoj");
 				break;
 			case 14:
-				W(`${v[0]} % Lv. ${v[4]} 小烈波（${v[1]}～${v[2]}）`, "AEITK8t");
+				W(`${v[0]} % Lv${v[4]} 小烈波（${v[1]}～${v[2]}）`, "AEITK8t");
 				break;
 			case 15:
 				W(`${v[0]} % Lv${v[4]}烈波（${v[1]}～${v[2]}）`, "at4bW0n");
@@ -763,7 +763,7 @@ function addCat(id, I, FC = 0) {
 	span.addEventListener('blur', function(e) {
 		let num = this.textContent.match(/\d+/);
 		if (num) {
-			num = parseInt(num[0]);
+			num = parseInt(num[0], 10);
 			if (num) {
 				num = Math.min(num, this.C.info[4] + this.C.info[5]);
 				if (num != this.lv) {
@@ -774,16 +774,16 @@ function addCat(id, I, FC = 0) {
 						if (this.X.checked) {
 							J.applyTalents(this.C.info[10], get_t(L));
 							if (num < 30)
-								alert('提醒：開放本能升級等級需求至少為 Lv. 30');
+								alert('提醒：開放本能升級等級需求至少為 Lv30');
 						}
 						if (this.Y && this.Y.checked) {
 							J.applySuperTalents(L, get_s(L));
 							if (num < 60)
-								alert('提醒：開放超本能等級需求至少為 Lv. 60');
+								alert('提醒：開放超本能等級需求至少為 Lv60');
 						}
 					}
 					if (J.lvc == 3 && num < 60) {
-						alert('提醒：開放第四進化等級需求至少為 Lv. 60');
+						alert('提醒：開放第四進化等級需求至少為 Lv60');
 					}
 					setStat(this.C, J, this.I, this.lv = num);
 				}
@@ -792,7 +792,7 @@ function addCat(id, I, FC = 0) {
 		this.textContent = this.lv;
 	});
 	M = tby[1].children[I];
-	M.textContent = (F.name || F.jp_name) + ' Lv. ';
+	M.textContent = (F.name || F.jp_name) + ' Lv';
 	M.appendChild(span);
 	if (FL) {
 		F = new Form(structuredClone(F));
@@ -834,12 +834,12 @@ function addCat(id, I, FC = 0) {
 			const H = new Form(structuredClone(span.F));
 			if (span.X.checked) {
 				if (span.lv < 30)
-					alert('提醒：開放本能升級等級需求至少為 Lv. 30');
+					alert('提醒：開放本能升級等級需求至少為 Lv30');
 				H.applyTalents(span.C.info[10], get_t(span.C.info[10]));
 			}
 			if (span.Y && span.Y.checked) {
 				if (span.lv < 60)
-					alert('提醒：開放超本能等級需求至少為 Lv. 60');
+					alert('提醒：開放超本能等級需求至少為 Lv60');
 				span.textContent = span.lv;
 				H.applySuperTalents(span.C.info[10], get_s(span.C.info[10]));
 			}
@@ -860,12 +860,12 @@ function addCat(id, I, FC = 0) {
 				const H = new Form(structuredClone(span.F));
 				if (span.X.checked) {
 					if (span.lv < 30)
-						alert('提醒：開放本能升級等級需求至少為 Lv. 30');
+						alert('提醒：開放本能升級等級需求至少為 Lv30');
 					H.applyTalents(span.C.info[10], get_t(span.C.info[10]));
 				}
 				if (span.Y.checked) {
 					if (span.lv < 60)
-						alert('提醒：開放超本能等級需求至少為 Lv. 60');
+						alert('提醒：開放超本能等級需求至少為 Lv60');
 					span.textContent = span.lv;
 					H.applySuperTalents(span.C.info[10], get_s(span.C.info[10]));
 				}
@@ -917,7 +917,7 @@ function savePNG() {
 		let N = [];
 		for (const C of targets) {
 			const X = C.split('-');
-			const M = cats[parseInt(X[0])].forms[parseInt(X[1])];
+			const M = cats[parseInt(X[0], 10)].forms[parseInt(X[1], 10)];
 			N.push(M.name || M.jp_name);
 		}
 		const a = document.createElement('a');

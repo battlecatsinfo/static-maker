@@ -1096,9 +1096,9 @@ async function load_all() {
 	res = await fetch("/reward.json");
 	if (!res.ok) throw '';
 	char_groups['RWNAME'] = await res.json();
-	res = await fetch("/ENAME");
+	res = await fetch("/ENAME.txt");
 	if (!res.ok) throw '';
-	char_groups['ENAME'] = (await res.text()).split('|');
+	char_groups['ENAME'] = (await res.text()).split('\n');
 	char_groups['ver'] = {{{stage-ver}}};
 	db.transaction('map', 'readwrite').objectStore('map').put(char_groups, -1).onsuccess = initUI;
 }
